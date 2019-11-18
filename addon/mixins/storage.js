@@ -66,7 +66,6 @@ export default Mixin.create({
 
         if (event.storageArea === storage && event.key === storageKey) {
           if (
-            ('hidden' in document && !document.hidden && !this._testing) ||
             event.newValue === event.oldValue ||
             event.newValue === JSON.stringify(this.get('content'))
           ) {
@@ -87,6 +86,10 @@ export default Mixin.create({
   },
 
   _save() {
+    Ember.run.once(this, '_doSave');
+  },
+
+  _doSave() {
     const storage = this._storage();
     const content = get(this, 'content');
     const storageKey = get(this, '_storageKey');
